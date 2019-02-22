@@ -1,21 +1,21 @@
 language: python
 
 python:
-  - "3.6"
+    - "3.6"
 
-addon:
-  - postgresql: "9.6"
-
+services: 
+    - postgresql
+    
+before_script:
+    - psql -c 'create database ah_zeus_db;' -U postgres
+    - python manage.py makemigrations
+    - python manage.py migrate
+    
 install:
-  - pip install -r requirements.txt
-  - pip install coveralls
-
-before script:
-  - psql -c "create database django_auth;" -U postgres
+    - pip install -r requirements.txt
 
 script:
-  - coverage run --omit="*wsgi*,*base*,*staging*,*production*," --source="snippets" manage.py test --verbosity 3
-  - coverage report -m
-  - coveralls
-after script:
-  - coveralls
+    - coverage run --source='authors' manage.py test
+
+after_success:
+    - coveralls
