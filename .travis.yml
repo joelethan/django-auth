@@ -1,21 +1,16 @@
 language: python
-
 python:
-    - "3.6"
-
-services: 
-    - postgresql
-    
+- '3.6'
+services:
+  - postgresql
+addons:
+  postgresql: "9.4"
 before_script:
-    - psql -c 'create database snippets;' -U postgres
-    - python manage.py makemigrations
-    - python manage.py migrate
-    
-install:
-    - pip install -r requirements.txt
-
+- pip3 install -r requirements.txt
+- psql -c 'create database ahdb;' -U postgres
+- python manage.py makemigrations
+- python manage.py migrate
 script:
-    - coverage run --source='snippets' manage.py test
-
+- coverage run --source='snippets' manage.py test && coverage report
 after_success:
-    - coveralls
+- coveralls
