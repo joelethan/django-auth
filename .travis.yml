@@ -7,7 +7,7 @@ services:
     - postgresql
     
 before_script:
-    - psql -c 'create database ah_zeus_db;' -U postgres
+    - psql -c 'create database snippets;' -U postgres
     - python manage.py makemigrations
     - python manage.py migrate
     
@@ -15,7 +15,7 @@ install:
     - pip install -r requirements.txt
 
 script:
-    - coverage run --source='authors' manage.py test
+    - coverage run --source='snippets' manage.py test
 
 after_success:
     - coveralls
